@@ -4,7 +4,7 @@ body, html {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 .button1 {
-    width: 220px;
+   width: 220px;
     height: 50px;
     border: none;
     outline: none;
@@ -14,6 +14,7 @@ body, html {
     position: relative;
     z-index: 0;
     border-radius: 10px;
+    text-decoration: none;
   }
   .button1:before {
     content: "";
@@ -75,6 +76,73 @@ body, html {
       background-position: 0 0;
     }
   }
+  .button2{
+    width: 220px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111;
+    cursor: pointer;
+    z-index: 0;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .button2::before{
+    content: "";
+    background: linear-gradient(
+      45deg,
+      #ff0000,
+      #ff7300,
+      #fffb00,
+      #48ff00,
+      #00ffd5,
+      #002bff,
+      #7a00ff,
+      #ff00c8,
+      #ff0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 10px;
+  }
+  .button2:active{
+    color: #000;
+  }
+  .button2:hover::before{
+    opacity: 1;
+  }
+  .button2:after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+  }
+  @keyframes glowing {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 400% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
 .n1{
     background-color: aliceblue;
     color: aquamarine;
@@ -88,11 +156,12 @@ h1{
     text-align: center;
     margin: 0;
 }
+table{
+  width: 100%;
+}
 table tr{
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 15px;
+  display: flex;
+  justify-content: center;
 }
 table tr td {
     color: hsl(0, 24%, 92%);
@@ -108,11 +177,6 @@ table tr td {
   height: 100vh;
 
 
-}
-.n1{
- font-size: large;
-  margin: 10%;
-  color: #002bff;
 }
 .h5-ref{
   color: rgb(21, 6, 240);
@@ -142,10 +206,8 @@ transition: .5s ease;
   filter: contrast(120%);
 }h1 {
    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-
 }
 p{
   font-size: larger;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  
 }

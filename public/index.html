@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AGUITA DE COCO</title>
+    <link rel="stylesheet" href="/public/css/estilos.css">
+    <link rel="shortcut icon" href="public/img/Captura de pantalla 2024-08-29 201601.png" type="aguita de coco">
+  </head>
+  <body>
+    <header class="n1">
+      <h1>AGUITA DE COCO</h1>
+      <table>
+        <tr>
+          <td>
+            <button class="button1">ENTERIZOS<a href="#"></a></button>
+          </td>
+          &nbsp; &nbsp;&nbsp;
+          <td>
+            <button class="button1">DOS PEZAS<a href="#"></a></button>
+          </td>
+          <td></td>
+          <td>
+            <button class="button1">SAlIDAS DE BAÑO<a href="#"></a></button>
+          </td>
+          <td>
+            <button class="button1"><a href="https://www.facebook.com/jefmazaguitadecoco/" target="_blank">FACEBOOK</a></button>
+          </td>
+        </tr>
+      </table>
+      <br><br><br><br> 
+      <h1 class="button2">MODELOS</h1>
+      <section class="modelos"> 
+        <img
+          src="img/Captura de pantalla 2024-08-28 161844.png"
+          alt="ref 2020"
+        />
+        <img
+          src="img/Captura de pantalla 2024-08-28 162200.png"
+          alt="ref2021"
+        />
+        <img
+          src="img/Captura de pantalla 2024-08-28 162320.png"
+          alt="ref2008"
+        />
+        <img
+          src="img/Captura de pantalla 2024-08-28 163243.png"
+          alt="ref2031"
+        />
+        <img
+          src="img/pexels-ksu-eli-studio-78564297-8730491 (1).jpg"
+          alt="2032"
+        />
+      </section>
+    </header>
+
+    <section id="2p">
+      <h2 class="h5-ref">AGUITA DE COCO</h2>
+      <p>
+        Somos una empresa dedicada a dar soluciones para tus proximas vaciones ,
+        tenemos todo lo relacionado con vestidos de baño para toda la familia y
+        accesorios
+      </p>
+      
+      <video
+        class="video1"
+        src="video/Video.Guru_20240716_193614893.mp4"
+        controls
+        preload="auto"
+      ></video>
+    </section>
+    <section>
+      <form action="formulario">
+        <input type="email" name="email" id="email" placeholder="correo" required>
+      </form>
+    </section>
+
+    <div id="popup" class="popup">
+      <div class="popup-content">
+          <span class="close">&times;</span>
+          <h2>Contact Form</h2>
+          <form id="contactForm">
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name" required>
+
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required>
+
+              <label for="message">Message:</label>
+              <textarea id="message" name="message" required></textarea>
+
+              <button type="submit">Submit</button>
+          </form>
+      </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var popup = document.getElementById('popup');
+        var closeBtn = document.querySelector('.close');
+        var form = document.getElementById('contactForm');
+
+        function closePopup() {
+            popup.style.display = 'none';
+        }
+
+        closeBtn.addEventListener('click', closePopup);
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the form data to a server
+            console.log('Form submitted');
+            closePopup();
+        });
+
+        // Close popup when clicking outside of it
+        window.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                closePopup();
+            }
+        });
+    });
+</script>
+    <footer></footer>
+  </body>
+</html>
