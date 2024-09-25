@@ -78,58 +78,74 @@
       </section>
       
     </section>
-    <section>
-      <form action="formulario">
-        <input type="email" name="email" id="email" placeholder="correo" required>
+    <div class="container">
+      <h1>Comentarios</h1>
+
+      <form id="commentForm">
+          <input type="text" id="username" placeholder="Nombre de usuario" required>
+          <textarea id="content" placeholder="Escribe tu comentario" required></textarea>
+          <input type="text" id="postId" placeholder="ID de la publicación" required>
+          <button type="submit">Enviar comentario</button>
       </form>
-    </section>
 
-    <div id="popup" class="popup">
-      <div class="popup-content">
-          <span class="close">&times;</span>
-          <h2>CONTACTANOS</h2>
-          <form id="contactForm">
-              <label for="name">Name:</label>
-              <input type="text" id="name" name="name" required>
-
-              <label for="email">Email:</label>
-              <input type="email" id="email" name="email" required>
-
-              <label for="message">Message:</label>
-              <textarea id="message" name="message" required></textarea>
-
-              <button type="submit">Submit</button>
-          </form>
-      </div>
+      <div id="commentsContainer"></div>
   </div>
-
+  <script src="script.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var popup = document.getElementById('popup');
-        var closeBtn = document.querySelector('.close');
-        var form = document.getElementById('contactForm');
+    const commentForm = document.getElementById('commentForm');
+const commentsContainer = document.getElementById('commentsContainer');
 
-        function closePopup() {
-            popup.style.display = 'none';
-        }
+commentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        closeBtn.addEventListener('click', closePopup);
+    const username = document.getElementById('username').value;
+    const content = document.getElementById('content').value;
+    const postId = document.getElementById('postId').value;
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Here you would typically send the form data to a server
-            console.log('Form submitted');
-            closePopup();
+    try {
+        const response = await fetch('/comments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, content, postId })
         });
 
-        // Close popup when clicking outside of it
-        window.addEventListener('click', function(e) {
-            if (e.target === popup) {
-                closePopup();
-            }
-        });
-    });
-</script>
+        const newComment = await response.json();
+        displayComment(newComment);
+
+        commentForm.reset();
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+
+async function fetchComments(postId) {
+    try {
+        const response = await fetch(`/comments/${postId}`);
+        const comments = await response.json();
+
+        comments.forEach(displayComment);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function displayComment(comment) {
+    const commentElement = document.createElement('div');
+    commentElement.classList.add('comment');
+
+    commentElement.innerHTML = `
+        <h3>${comment.username}</h3>
+        <p>${comment.content}</p>
+        <small>Publicado el: ${new Date(comment.createdAt).toLocaleString()}</small>
+    `;
+
+    commentsContainer.appendChild(commentElement);
+}
+
+// Inicialmente, puedes cargar los comentarios para un postId específico
+fetchComments('123'); // Reemplaza '123' con el ID de publicación real
+
+  </script>
     <footer></footer>
   </body>
 </html>
