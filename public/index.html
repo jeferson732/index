@@ -4,8 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AGUITA DE COCO</title>
-    <link rel="stylesheet" href="/css/estilos.css">
-    <link rel="shortcut icon" href="/img/Captura de pantalla 2024-08-29 201601.png" type="aguita de coco">
+    <link rel="stylesheet" href="/css/estilos.css" />
+    <link
+      rel="shortcut icon"
+      href="/img/Captura de pantalla 2024-08-29 201601.png"
+      type="aguita de coco"
+    />
   </head>
   <body>
     <header class="n1">
@@ -24,13 +28,19 @@
             <button class="button1">SAlIDAS DE BAÑO<a href="#"></a></button>
           </td>
           <td>
-            <button class="button1"><a href="https://www.facebook.com/jefmazaguitadecoco/" target="_blank">FACEBOOK</a></button>
+            <button class="button1">
+              <a
+                href="https://www.facebook.com/jefmazaguitadecoco/"
+                target="_blank"
+                >FACEBOOK</a
+              >
+            </button>
           </td>
         </tr>
       </table>
-      <br><br><br><br> 
+      <br /><br /><br /><br />
       <h1 class="button2">MODELOS</h1>
-      <section class="modelos"> 
+      <section class="modelos">
         <img
           src="img/Captura de pantalla 2024-08-28 161844.png"
           alt="ref 2020"
@@ -55,14 +65,18 @@
     </header>
 
     <section id="2p">
-      <h2 class="h5-ref">AGUITA DE COCO</h2> 
-      
-      <div class = "gallery"> 
-       <img src="img/Captura de pantalla 2024-08-28 161844.png" alt="vestidos de baño">
-        <img src="img/Captura de pantalla 2024-08-28 162200.png" alt="vestidos de baño">  
+      <h2 class="h5-ref">AGUITA DE COCO</h2>
+
+      <div class="gallery">
+        <img
+          src="img/Captura de pantalla 2024-08-28 161844.png"
+          alt="vestidos de baño"
+        />
+        <img
+          src="img/Captura de pantalla 2024-08-28 162200.png"
+          alt="vestidos de baño"
+        />
       </div>
-    
-    
 
       <p>
         Somos una empresa dedicada a dar soluciones para tus proximas vaciones ,
@@ -76,76 +90,223 @@
           preload="auto"
         ></video>
       </section>
-      
     </section>
     <div class="container">
       <h1>Comentarios</h1>
 
       <form id="commentForm">
-          <input type="text" id="username" placeholder="Nombre de usuario" required>
-          <textarea id="content" placeholder="Escribe tu comentario" required></textarea>
-          <input type="text" id="postId" placeholder="ID de la publicación" required>
-          <button type="submit">Enviar comentario</button>
+        <input
+          type="text"
+          id="username"
+          placeholder="Nombre de usuario"
+          required
+        />
+        <textarea
+          id="content"
+          placeholder="Escribe tu comentario"
+          required
+        ></textarea>
+        <input
+          type="text"
+          id="email"
+          placeholder="email"
+          required
+        />
+        <button type="submit">Enviar comentario</button>
       </form>
 
       <div id="commentsContainer"></div>
-  </div>
-  <script src="script.js"></script>
-  <script>
-    const commentForm = document.getElementById('commentForm');
-const commentsContainer = document.getElementById('commentsContainer');
+    </div>
+    <script src="script.js"></script>
+    <script>
+      const commentForm = document.getElementById("commentForm");
+      const commentsContainer = document.getElementById("commentsContainer");
 
-commentForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+      commentForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    const username = document.getElementById('username').value;
-    const content = document.getElementById('content').value;
-    const postId = document.getElementById('postId').value;
+        const username = document.getElementById("username").value;
+        const content = document.getElementById("content").value;
+        const postId = document.getElementById("postId").value;
 
-    try {
-        const response = await fetch('/comments', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, content, postId })
-        });
+        try {
+          const response = await fetch("/comments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, content, postId }),
+          });
 
-        const newComment = await response.json();
-        displayComment(newComment);
+          const newComment = await response.json();
+          displayComment(newComment);
 
-        commentForm.reset();
-    } catch (error) {
-        console.error('Error:', error);
-    }
-});
+          commentForm.reset();
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      });
 
-async function fetchComments(postId) {
-    try {
-        const response = await fetch(`/comments/${postId}`);
-        const comments = await response.json();
+      async function fetchComments(postId) {
+        try {
+          const response = await fetch(`/comments/${postId}`);
+          const comments = await response.json();
 
-        comments.forEach(displayComment);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
+          comments.forEach(displayComment);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
 
-function displayComment(comment) {
-    const commentElement = document.createElement('div');
-    commentElement.classList.add('comment');
+      function displayComment(comment) {
+        const commentElement = document.createElement("div");
+        commentElement.classList.add("comment");
 
-    commentElement.innerHTML = `
+        commentElement.innerHTML = `
         <h3>${comment.username}</h3>
         <p>${comment.content}</p>
-        <small>Publicado el: ${new Date(comment.createdAt).toLocaleString()}</small>
+        <small>Publicado el: ${new Date(
+          comment.createdAt
+        ).toLocaleString()}</small>
+        <button onclick="editComment('${comment._id}')">Editar</button>
+        <button onclick="deleteComment('${comment._id}')">Eliminar</button>
     `;
 
-    commentsContainer.appendChild(commentElement);
-}
+        commentsContainer.appendChild(commentElement);
+      }
 
-// Inicialmente, puedes cargar los comentarios para un postId específico
-fetchComments('123'); // Reemplaza '123' con el ID de publicación real
+      // Inicialmente, puedes cargar los comentarios para un postId específico
+      fetchComments("123"); // Reemplaza '123' con el ID de publicación rea
 
-  </script>
+      function editComment(commentId) {
+        const newContent = prompt("Escribe el nuevo contenido del comentario:");
+        if (newContent) {
+          fetch(`/comments/${commentId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ content: newContent }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("Comentario actualizado con éxito");
+              // Actualizar el contenido del comentario en la página
+              fetchComments("123"); // Reemplaza '123' con el postId real
+            })
+            .catch((error) => console.error("Error:", error));
+        }
+      }
+
+      function deleteComment(commentId) {
+        if (confirm("¿Estás seguro de que deseas eliminar este comentario?")) {
+          fetch(`/comments/${commentId}`, {
+            method: "DELETE",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("Comentario eliminado con éxito");
+              // Eliminar el comentario de la página
+              fetchComments("123"); // Reemplaza '123' con el postId real
+            })
+            .catch((error) => console.error("Error:", error));
+        }
+      }
+
+      <button onclick="editComment('commentId')">Editar</button>;
+      function editComment(commentId) {
+        const newContent = prompt("Escribe el nuevo contenido del comentario:");
+        if (newContent) {
+          fetch(`/comments/${commentId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ content: newContent }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("Comentario actualizado con éxito");
+              // Actualiza el comentario en la página
+            })
+            .catch((error) => console.error("Error:", error));
+        }
+      }
+    </script>
+
+    <!-- Botón para eliminar un comentario -->
+    <button onclick="deleteComment('commentId')">Eliminar</button>
+
+    <script>
+      function deleteComment(commentId) {
+        if (confirm("¿Estás seguro de que deseas eliminar este comentario?")) {
+          fetch(`/comments/${commentId}`, {
+            method: "DELETE",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("Comentario eliminado con éxito");
+              // Elimina el comentario de la página
+            })
+            .catch((error) => console.error("Error:", error));
+        }
+      }
+    </script>
+    <!-- Botón para eliminar un comentario -->
+    <button onclick="deleteComment('commentId')">Eliminar</button>
+
+    <script>
+      function deleteComment(commentId) {
+        if (confirm('¿Estás seguro de que deseas eliminar este comentario?')) {
+          fetch(`/comments/${commentId}`, {
+            method: 'DELETE',
+          })
+          .then(response => response.json())
+          .then(data => {
+            alert('Comentario eliminado con éxito');
+            // Elimina el comentario de la página
+          })
+          .catch(error => console.error('Error:', error));
+        }
+      }
+      /* ver los comentarios organizados en la pg de perfil
+    </script>
+    <h2>Tus Comentarios</h2>
+    <ul id="commentsList"></ul>
+
+    <script>
+      fetch("/comments/user/miUsuario")
+        .then((response) => response.json())
+        .then((comments) => {
+          const commentsList = document.getElementById("commentsList");
+          comments.forEach((comment) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = `${comment.content} (Publicado en: ${comment.postId})`;
+            commentsList.appendChild(listItem);
+          });
+        })
+        .catch((error) =>
+          console.error("Error al obtener los comentarios:", error)
+        );
+    </script>
+
+    <h2>Notificaciones</h2>
+    <ul id="notificationsList"></ul>
+    <script>
+      fetch("/notifications/userId")
+        .then((response) => response.json())
+        .then((notifications) => {
+          const notificationsList =
+            document.getElementById("notificationsList");
+          notifications.forEach((notification) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = notification.message;
+            notificationsList.appendChild(listItem);
+          });
+        })
+        .catch((error) =>
+          console.error("Error al obtener las notificaciones:", error)
+        );
+    </script>
+
     <footer></footer>
   </body>
 </html>
