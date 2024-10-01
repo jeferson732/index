@@ -95,217 +95,23 @@
       <h1>Comentarios</h1>
 
       <form id="commentForm">
-        <input
-          type="text"
-          id="username"
-          placeholder="Nombre de usuario"
-          required
-        />
-        <textarea
-          id="content"
-          placeholder="Escribe tu comentario"
-          required
-        ></textarea>
-        <input
-          type="text"
-          id="email"
-          placeholder="email"
-          required
-        />
-        <button type="submit">Enviar comentario</button>
+          <input type="text" id="username" placeholder="Nombre de usuario" required />
+          <textarea id="content" placeholder="Escribe tu comentario" required></textarea>
+          <input type="email" id="email" placeholder="Tu email" required />
+          <button type="submit">Enviar comentario</button>
+          <button type="button" id="editButton" style="display: none;">Editar Comentario</button>
       </form>
 
       <div id="commentsContainer"></div>
-    </div>
-    <script src="script.js"></script>
-    <script>
-      const commentForm = document.getElementById("commentForm");
-      const commentsContainer = document.getElementById("commentsContainer");
+  </div>
 
-      commentForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+  <h2 class="Tuscomentarios">Tus Comentarios</h2>
+  <ul id="commentsList"></ul>
 
-        const username = document.getElementById("username").value;
-        const content = document.getElementById("content").value;
-        const postId = document.getElementById("postId").value;
+  <h2 class="Notificaciones">Notificaciones</h2>
+  <ul id="notificationsList"></ul>
 
-        try {
-          const response = await fetch("/comments", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, content, postId }),
-          });
-
-          const newComment = await response.json();
-          displayComment(newComment);
-
-          commentForm.reset();
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      });
-
-      async function fetchComments(postId) {
-        try {
-          const response = await fetch(`/comments/${postId}`);
-          const comments = await response.json();
-
-          comments.forEach(displayComment);
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
-
-      function displayComment(comment) {
-        const commentElement = document.createElement("div");
-        commentElement.classList.add("comment");
-
-        commentElement.innerHTML = `
-        <h3>${comment.username}</h3>
-        <p>${comment.content}</p>
-        <small>Publicado el: ${new Date(
-          comment.createdAt
-        ).toLocaleString()}</small>
-        <button onclick="editComment('${comment._id}')">Editar</button>
-        <button onclick="deleteComment('${comment._id}')">Eliminar</button>
-    `;
-
-        commentsContainer.appendChild(commentElement);
-      }
-
-      // Inicialmente, puedes cargar los comentarios para un postId específico
-      fetchComments("123"); // Reemplaza '123' con el ID de publicación rea
-
-      function editComment(commentId) {
-        const newContent = prompt("Escribe el nuevo contenido del comentario:");
-        if (newContent) {
-          fetch(`/comments/${commentId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ content: newContent }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              alert("Comentario actualizado con éxito");
-              // Actualizar el contenido del comentario en la página
-              fetchComments("123"); // Reemplaza '123' con el postId real
-            })
-            .catch((error) => console.error("Error:", error));
-        }
-      }
-
-      function deleteComment(commentId) {
-        if (confirm("¿Estás seguro de que deseas eliminar este comentario?")) {
-          fetch(`/comments/${commentId}`, {
-            method: "DELETE",
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              alert("Comentario eliminado con éxito");
-              // Eliminar el comentario de la página
-              fetchComments("123"); // Reemplaza '123' con el postId real
-            })
-            .catch((error) => console.error("Error:", error));
-        }
-      }
-
-      <button onclick="editComment('commentId')">Editar</button>;
-      function editComment(commentId) {
-        const newContent = prompt("Escribe el nuevo contenido del comentario:");
-        if (newContent) {
-          fetch(`/comments/${commentId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ content: newContent }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              alert("Comentario actualizado con éxito");
-              // Actualiza el comentario en la página
-            })
-            .catch((error) => console.error("Error:", error));
-        }
-      }
-    </script>
-
-    <!-- Botón para eliminar un comentario -->
-    <button onclick="deleteComment('commentId')">Eliminar</button>
-
-    <script>
-      function deleteComment(commentId) {
-        if (confirm("¿Estás seguro de que deseas eliminar este comentario?")) {
-          fetch(`/comments/${commentId}`, {
-            method: "DELETE",
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              alert("Comentario eliminado con éxito");
-              // Elimina el comentario de la página
-            })
-            .catch((error) => console.error("Error:", error));
-        }
-      }
-    </script>
-    <!-- Botón para eliminar un comentario -->
-    <button onclick="deleteComment('commentId')">Eliminar</button>
-
-    <script>
-      function deleteComment(commentId) {
-        if (confirm('¿Estás seguro de que deseas eliminar este comentario?')) {
-          fetch(`/comments/${commentId}`, {
-            method: 'DELETE',
-          })
-          .then(response => response.json())
-          .then(data => {
-            alert('Comentario eliminado con éxito');
-            // Elimina el comentario de la página
-          })
-          .catch(error => console.error('Error:', error));
-        }
-      }
-      /* ver los comentarios organizados en la pg de perfil
-    </script>
-    <h2>Tus Comentarios</h2>
-    <ul id="commentsList"></ul>
-
-    <script>
-      fetch("/comments/user/miUsuario")
-        .then((response) => response.json())
-        .then((comments) => {
-          const commentsList = document.getElementById("commentsList");
-          comments.forEach((comment) => {
-            const listItem = document.createElement("li");
-            listItem.textContent = `${comment.content} (Publicado en: ${comment.postId})`;
-            commentsList.appendChild(listItem);
-          });
-        })
-        .catch((error) =>
-          console.error("Error al obtener los comentarios:", error)
-        );
-    </script>
-
-    <h2>Notificaciones</h2>
-    <ul id="notificationsList"></ul>
-    <script>
-      fetch("/notifications/userId")
-        .then((response) => response.json())
-        .then((notifications) => {
-          const notificationsList =
-            document.getElementById("notificationsList");
-          notifications.forEach((notification) => {
-            const listItem = document.createElement("li");
-            listItem.textContent = notification.message;
-            notificationsList.appendChild(listItem);
-          });
-        })
-        .catch((error) =>
-          console.error("Error al obtener las notificaciones:", error)
-        );
-    </script>
+  <script src="js/script.js"></script>
 
     <footer></footer>
   </body>

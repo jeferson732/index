@@ -1,9 +1,10 @@
+
 const express = require('express');
 const Comment = require('../models/Comment');
 const Notification = require('../models/Notification');
 const router = express.Router();
 
-
+// Obtener comentarios de un usuario por email
 router.get('/user/:email', async (req, res) => {
   const { email } = req.params;
   try {
@@ -15,16 +16,16 @@ router.get('/user/:email', async (req, res) => {
   }
 });
 
-
+// Crear un nuevo comentario con email
 router.post('/', async (req, res) => {
   const { username, content, email } = req.body;
   const newComment = new Comment({ username, content, email });
   try {
     const savedComment = await newComment.save();
     
-    
+    // Crear una notificación
     const notification = new Notification({
-      userId: /* Aquí el ID del propietario de la publicación */,
+      userId: 1,
       message: `Nuevo comentario de ${username}`,
       email,
     });
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-
+// Editar un comentario
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { content } = req.body;
@@ -49,7 +50,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-
+// Eliminar un comentario
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
