@@ -38,6 +38,7 @@ async function fetchComments() {
 function displayComment(comment) {
     const commentElement = document.createElement("div");
     commentElement.classList.add("comment");
+    commentElement.setAttribute("data-id", comment._id);
 
     commentElement.innerHTML = `
         <h3>${comment.username}</h3>
