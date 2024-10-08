@@ -14,7 +14,7 @@ commentForm.addEventListener("submit", async (e) => {
         const response = await fetch("/comments", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, content, email }),
+            body: JSON.stringify({ username, email, content }) 
         });
 
         const newComment = await response.json();
@@ -29,16 +29,21 @@ async function fetchComments() {
     try {
         const response = await fetch(`/comments/user/${email.value}`);
         const comments = await response.json();
-       // comments.forEach(displayComment);
+        comments.forEach(
+            (comentario )=>{
+                displayComment(comentario)
+            }
+        );
     } catch (error) {
        // console.error("Error:", error);
     }
 }
 
 function displayComment(comment) {
-    const commentElement = document.createElement("div");
+     commentElement = document.createElement("div");
     commentElement.classList.add("comment");
     commentElement.setAttribute("data-id", comment._id);
+    commentElement.setAttribute("data-email", comment.email); // Agregar el email aquí
 
     commentElement.innerHTML = `
         <h3>${comment.username}</h3>
@@ -55,7 +60,7 @@ function editComment(commentId) {
     const commentToEdit = commentsContainer.querySelector(`[data-id='${commentId}']`);
     document.getElementById("username").value = commentToEdit.querySelector("h3").innerText;
     document.getElementById("content").value = commentToEdit.querySelector("p").innerText;
-    document.getElementById("email").value = commentToEdit.getAttribute("data-email");
+    document.getElementById("email").value = commentToEdit.getAttribute("data-email"); // Obtener el email del atributo
     currentEditId = commentId;
     editButton.style.display = "inline";
 }
@@ -75,20 +80,29 @@ editButton.addEventListener("click", async () => {
         console.error("Error:", error);
     }
 });
-
 function deleteComment(commentId) {
     if (confirm("¿Estás seguro de que deseas eliminar este comentario?")) {
         fetch(`/comments/${commentId}`, {
             method: "DELETE",
         })
-            .then((response) => response.json())
-            .then(() => {
-                alert("Comentario eliminado con éxito");
-                fetchComments(); // Volver a cargar comentarios
-            })
-            .catch((error) => console.error("Error:", error));
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Error al eliminar el comentario');
+            }
+            return response.json();
+        })
+        .then(() => {
+            alert("Comentario eliminado con éxito");
+            // Aquí actualizas la interfaz para eliminar el comentario
+            const commentElement = document.querySelector(`[data-id='${commentId}']`);
+            if (commentElement) {
+                commentElement.remove(); // Eliminar el elemento del DOM
+            }
+        })
+        .catch((error) => console.error("Error:", error));
     }
 }
+
 
 // Inicialmente, carga los comentarios
 fetchComments();

@@ -9,9 +9,10 @@ router.get('/user/:email', async (req, res) => {
   const { email } = req.params;
   try {
     const comments = await Comment.find({ email });
-    if (!comments.length) return res.status(404).json({ error: 'No se encontraron comentarios' });
+    if (!comments.length ) return res.status(404).json({ error: 'No se encontraron comentarios para este mail' });
     res.json(comments);
-  } catch (err) {
+  }
+   catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
@@ -19,23 +20,34 @@ router.get('/user/:email', async (req, res) => {
 // Crear un nuevo comentario con email
 router.post('/', async (req, res) => {
   const { username, content, email } = req.body;
+  
+  // Verifica que se proporcionaron todos los datos
+  if (!username || !content || !email) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
   const newComment = new Comment({ username, content, email });
+  
   try {
     const savedComment = await newComment.save();
     
-    // Crear una notificación
-    const notification = new Notification({
-      userId: 1,
+    
+    
+     // Crear una notificación usando el email del comentario
+     const notification = new Notification({
+      email: email, // Usar el email del comentario
       message: `Nuevo comentario de ${username}`,
-      email,
     });
-    await notification.save();
+    
+   // await notification.save();
 
     res.status(201).json(savedComment);
   } catch (err) {
+    console.error('Error al guardar el comentario:', err);
     res.status(400).json({ error: err.message });
   }
 });
+
 
 // Editar un comentario
 router.put('/:id', async (req, res) => {
