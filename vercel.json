@@ -10,6 +10,14 @@
       {
         "src": "/(.*)",
         "dest": "server.js"
+      },
+      {
+        "src":"/comments",
+        "dest": "/routes/commentRoutes.js"
+      },
+      {
+        "src":"/notifications",
+        "dest": "/routes/notificationRoutes.js"
       }
     ]
   }
